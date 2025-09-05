@@ -1,3 +1,62 @@
-# Godot 4+ specific ignores
+# Godot 4+
+#
+# Lines starting with # are comments.
+#
+# This file is a template for the Godot Engine version 4.x.
+#
+# It's not a complete list of files to ignore, but it should cover the most
+# common cases.
+
+# Imported translations
+*.translation
+
+# Imported assets
+*.remap
+*.vrm
+*.mesh
+*.scn
+*.sntz
+*.stex
+*.svg.import
+*.ctex
+*.mdr
+*.gltf.import
+*.glb.import
+*.obj.import
+*.fbx.import
+*.escn.import
+*.dae.import
+*.blend.import
+*.blend1
+*.tscn.import
+*.tres.import
+*.res.import
+
+# Cache files
 .godot/
-/android/
+.mono/
+
+# Built project files
+export_presets.cfg
+*.binary
+*.exe
+*.pck
+*.apk
+*.aab
+*.x86
+*.x86_64
+*.arm64
+*.arm
+*.app
+*.dmg
+*.wix
+*.wxs
+*.msi
+
+# Project settings and user data
+*.godot
+project.godot.ide.*
+*.cfg
+*.user
+key.gd
+local_settings.tres
