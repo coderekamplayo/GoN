@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cbrs7dr7a7vba"]
+
+[ext_resource type="Script" uid="uid://bxdan05hxls35" path="res://actors/npcs/friendly_villager.gd" id="1_srmrn"]
+
+[node name="FriendlyVillager" type="Node2D"]
+script = ExtResource("1_srmrn")

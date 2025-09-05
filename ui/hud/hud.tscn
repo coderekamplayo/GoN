@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://ch243v5aff4wc"]
+
+[ext_resource type="Script" uid="uid://b1f4nk1b7n838" path="res://ui/hud/hud.gd" id="1_xmswo"]
+
+[node name="Hud" type="Node2D"]
+script = ExtResource("1_xmswo")
