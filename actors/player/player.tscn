@@ -591,6 +591,7 @@ animations = [{
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_nvxhs"]
 
 [node name="Player" type="CharacterBody2D"]
+z_index = 5
 script = ExtResource("1_nvxhs")
 
 [node name="Base" type="AnimatedSprite2D" parent="."]
@@ -607,3 +608,5 @@ animation = &"idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_nvxhs")
+
+[node name="Camera2D" type="Camera2D" parent="."]

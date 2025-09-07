@@ -11,13 +11,14 @@ config_version=5
 [application]
 
 config/name="GoN"
-run/main_scene="uid://c1qktoijyht75"
+run/main_scene="uid://dn4kb3xt55xk1"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
 InventoryManager="*res://autoload/inventory_manager.gd"
+GameManager="*res://autoload/game_manager.gd"
 
 [display]
 
