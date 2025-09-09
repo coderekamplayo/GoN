@@ -4,6 +4,9 @@ const SPEED := 120.0
 const SPRINT_SPEED := 200.0
 const JUMP_DISTANCE := 80.0
 const JUMP_DURATION := 0.4
+# --- NEW: Constants for our roll ---
+const ROLL_DISTANCE := 60.0 # <-- THIS IS THE NEW, SHORTER VALUE
+const ROLL_DURATION := 0.35
 
 @onready var spr_base: AnimatedSprite2D = $Base
 @onready var spr_hair: AnimatedSprite2D = $Hair
@@ -12,6 +15,8 @@ const JUMP_DURATION := 0.4
 var _flip_h := false
 var is_attacking := false
 var is_jumping := false
+# --- NEW: A state for rolling ---
+var is_rolling := false
 var last_move_direction := Vector2.DOWN
 
 func _ready() -> void:
@@ -21,28 +26,29 @@ func _ready() -> void:
 		spr_base.animation_finished.connect(_on_animation_finished)
 
 func _physics_process(_delta: float) -> void:
-	# First, check if the player is in a state that locks them out of control.
-	# If they are attacking or jumping, we do nothing else. The tween or animation
-	# has full control, and we skip all physics and input checks below.
-	if is_attacking or is_jumping:
+	# --- MODIFIED: Prevent actions if attacking, jumping, OR rolling ---
+	if is_attacking or is_jumping or is_rolling:
 		return
 
 	# --- Handle Inputs for Actions ---
-	# Check for actions that will change our state.
+
+	# Check for Roll input
+	if Input.is_action_just_pressed("roll"):
+		_perform_roll()
+		return
 
 	# Check for Jump input
 	if Input.is_action_just_pressed("jump"):
 		_perform_jump()
-		return # Stop processing this frame to ensure the jump is instant
+		return
 
 	# Check for Tool Use input
 	if Input.is_action_just_pressed("use_tool"):
 		is_attacking = true
 		_play_all("attack")
-		return # Stop processing this frame
+		return
 
 	# --- Handle Regular Movement ---
-	# This code will ONLY run if the player is not attacking or jumping.
 
 	# Get movement input
 	var dir := Vector2(
@@ -58,8 +64,6 @@ func _physics_process(_delta: float) -> void:
 	var current_speed := (SPRINT_SPEED if running else SPEED)
 
 	velocity = dir * current_speed
-	
-	# THIS IS THE KEY: move_and_slide() is now only called during normal movement.
 	move_and_slide()
 
 	# Update animation based on movement
@@ -76,16 +80,25 @@ func _physics_process(_delta: float) -> void:
 		if s:
 			s.flip_h = _flip_h
 
+# --- NEW: The function that handles the roll logic ---
+func _perform_roll() -> void:
+	is_rolling = true
+	_play_all("roll")
+	
+	var tween = create_tween()
+	tween.set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)
+	tween.tween_property(self, "global_position", global_position + last_move_direction * ROLL_DISTANCE, ROLL_DURATION)
+
+
 func _perform_jump() -> void:
 	is_jumping = true
 	_play_all("jump")
 	
 	var tween = create_tween()
-	# This ensures the tween is not affected by physics process pauses
 	tween.set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)
 	tween.tween_property(self, "global_position", global_position + last_move_direction * JUMP_DISTANCE, JUMP_DURATION)
 
-# --- The rest of your script is unchanged and correct ---
+# --- The rest of your script is unchanged ---
 
 func _play_all(anim: String) -> void:
 	for s in _layers():
@@ -102,10 +115,14 @@ func _on_base_frame_changed() -> void:
 	if spr_tool:
 		spr_tool.frame = spr_base.frame
 
+# --- MODIFIED: Add the roll condition to the animation finished logic ---
 func _on_animation_finished() -> void:
 	if spr_base.animation == "attack":
 		is_attacking = false
 		_play_all("idle")
 	elif spr_base.animation == "jump":
 		is_jumping = false
+		_play_all("idle")
+	elif spr_base.animation == "roll":
+		is_rolling = false
 		_play_all("idle")
