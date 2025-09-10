@@ -1,3 +1,22 @@
-[gd_scene format=3 uid="uid://b3i1w2kqrfvov"]
+[gd_scene load_steps=2 format=3 uid="uid://b3i1w2kqrfvov"]
 
-[node name="MainMenu" type="Node2D"]
+[ext_resource type="Texture2D" uid="uid://c6gpbxckyo7iv" path="res://assets/graphics/bi/PRE_ORIG_SIZE.png" id="1_iacjs"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 480.0
+offset_bottom = 271.0
+
+[node name="PreOrigSize" type="Sprite2D" parent="."]
+position = Vector2(240.5, 135)
+scale = Vector2(0.831597, 0.833333)
+texture = ExtResource("1_iacjs")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
